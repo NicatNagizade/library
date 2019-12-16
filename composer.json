@@ -1,0 +1,10 @@
+{
+    "name": "nicat.nagizade/library",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Lara\\App\\":"lara/app",
+            "App\\":"app"
+        }
+    }
+}
