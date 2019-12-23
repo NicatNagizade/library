@@ -7,6 +7,7 @@ class Language{
 
     public static function setLanguage($language){
         static::$language = $language;
+        new self();
     }
 
     public function __construct()

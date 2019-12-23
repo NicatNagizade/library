@@ -6,8 +6,7 @@ $routes = [
     'web'
 ];
 
-setLang('az');
-new Language;
+setLang('en');
 
 foreach($routes as $inc){
     require_once base_path('routes/'.$inc.'.php');
