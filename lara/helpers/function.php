@@ -1,6 +1,8 @@
 <?php
 
-$envData = function (){
+use Lara\App\Models\View;
+
+$envData = function () : array{
     $data = fopen('.env','r');
     $arr =[];
     if($data){
@@ -11,59 +13,74 @@ $envData = function (){
             }
         }
     }
-    return $arr;
+    return (array)$arr;
 };
-function env($par,$defaultPar = null){
+function env(string $par,string $defaultPar = null) : string{
     global $envData;
     foreach ($envData() as $key => $value) {
         if($key == $par){
-            return $value;
+            return (string)$value;
         }
     }
-    return $defaultPar;
+    return (string)$defaultPar;
 }
-function base_path($path){
+function base_path(string $path):string{
     $path = ltrim($path,'/');
     $base = env('BASE_PATH');
     $base = ltrim($base,'/');
-    return $_SERVER['DOCUMENT_ROOT'].'/'.$base.'/'.$path;
+    return (string)$_SERVER['DOCUMENT_ROOT'].'/'.$base.'/'.$path;
 }
-function get($par){
+function get(string $par):string{
     if(isset($_GET[$par])){
-        return $_GET[$par];
+        return (string)$_GET[$par];
     }
+    return '';
 }
-function post($par){
+function post(string $par):string{
     if(isset($_POST[$par])){
-        return $_POST[$par];
+        return (string)$_POST[$par];
     }
+    return '';
 }
-function request($par){
+function request(string $par):string{
     if(isset($_REQUEST[$par])){
-        return $_REQUEST[$par];
+        return (string)$_REQUEST[$par];
     }
+    return '';
 }
-function cookie($par){
+function cookie(string $par):string{
     if(isset($_COOKIE[$par])){
-        return $_COOKIE[$par];
+        return (string)$_COOKIE[$par];
     }
+    return '';
 }
-function session($par){
+function session(string $par):string{
     if(isset($_SESSION[$par])){
-        return $_SESSION[$par];
+        return (string)$_SESSION[$par];
     }
+    return '';
 }
-function view($path,array $parameters=[]){
+function view(string $path,array $parameters=[]){
     $path = str_replace('.','/',$path);
     $path = ltrim($path,'/');
     foreach ($parameters as $key => $value) {
         ${$key} = $value;
     }
-    include base_path('resources/views/'.$path.'.php');
+    print View::getView($path);
 }
-function setLang($language){
+function setLang(string $language){
     Lara\App\Models\Language::setLanguage($language);
 }
-function lang($word){
-    return Lara\App\Models\Language::lang($word);
+function lang(string $word,array $params = []){
+    return Lara\App\Models\Language::lang($word,$params);
+}
+function getBeetweens(string $start, string $end, string $string):array{
+    $strings = explode($start,$string);
+    $res = [];
+    for($i=0;$i<count($strings); $i++){
+        if($i == 0) continue;
+        $s = explode($end,$strings[$i]);
+        $res[] = $s[0];
+    }
+    return (array)$res;
 }

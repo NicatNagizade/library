@@ -1,2 +1,2 @@
 <h1>TEST</h1>
-<?php print lang('salam') ?>
+<?php print lang('required',['attribute'=>'name']) ?>

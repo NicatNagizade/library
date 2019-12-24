@@ -8,7 +8,7 @@ class DB{
     protected $select = '*';
     protected $limit = null;
     protected $offset = null;
-    protected $attributes =[];
+    public $attributes =[];
     private $key = 'id';
     public function setKey($key){
         $this->key = $key;
@@ -112,16 +112,17 @@ class DB{
     }
     public function find($id){
         $data = $this->where('id',$id)->first();
+        if(!$data) return exit('Bele bir data yoxdu');
         foreach ($data as $key => $value) {
             $this->attributes[$key] = $value;
         }
         return $this;
     }
-    public function limit($limit){
+    public function limit(int $limit){
         $this->limit = " LIMIT ".$limit;
         return $this;
     }
-    public function offset($offset){
+    public function offset(int $offset){
         $this->offset = " OFFSET ".$offset;
         return $this;
     }

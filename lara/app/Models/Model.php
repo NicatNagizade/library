@@ -4,9 +4,13 @@ namespace Lara\App\Models;
 abstract class Model{
     protected $db;
     protected $table;
-    protected $attributes = [];
+    public $attributes = [];
     protected $key = 'id';
-    public static function db(){
+    public function __construct(array $attributes =[])
+    {
+        $this->attributes = $attributes;
+    }
+    public static function db():DB{
         if($table = (new static)->table){
             return DB::table($table)->setKey((new static)->key);
         }else{
@@ -18,7 +22,7 @@ abstract class Model{
     }
     public static function __callStatic($name, $arguments)
     {
-        if(method_exists(new Db,$name)){
+        if(method_exists(new Db,$name) && !method_exists(new static,$name)){
             if(count($arguments) == 0){
                 return static::db()->$name();
             }

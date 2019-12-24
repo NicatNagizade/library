@@ -5,7 +5,7 @@ use PDO;
 use PDOException;
 
 class Connection{
-    public static function con(){
+    public static function con():PDO{
         $db=null;
         $db_connection = env('DB_CONNECTION');
         $db_host = env('DB_HOST');

@@ -5,12 +5,21 @@ class Route{
 
     public static function __callStatic($name, $arguments)
     {
-        if($name == 'get'){
-            return new self(...$arguments);
+        $self = new self;
+        switch ($name){
+            case 'get':
+                return $self->getRoute(...$arguments);
+            break;
+            case 'view':
+                return $self->view(...$arguments);
+            break;
         }
     }
-    public function __construct(...$arguments)
+    public function __construct()
     {
+       
+    }
+    public function getRoute(...$arguments){
         $path = $arguments[0];
         $params = $this->checkPath($path);
         if($params){
@@ -48,7 +57,7 @@ class Route{
         }
         return true;
     }
-    public function getController($controllerMethod,$params =[]){
+    public function getController(string $controllerMethod,$params =[]){
             $ar2 = explode('@',$controllerMethod);
             $controller = $ar2[0];
             $method = $ar2[1];
@@ -60,7 +69,15 @@ class Route{
             }elseif(is_string($res) || is_numeric($res)){
                 print $res;
             }
-            exit();
+            exit;
+    }
+    public function view(...$arguments){
+        $url = get('path');
+        $path = ltrim($arguments[0],'/');
+        if($url == $path){
+            print view($arguments[1]);
+            exit;
+        }
     }
 
 }
